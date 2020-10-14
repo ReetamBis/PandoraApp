@@ -21,7 +21,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="horizontal"
+            android:scrollbars="none"
+
             android:id="@+id/prepaper"/>
         <TextView
             android:layout_width="match_parent"
@@ -32,7 +33,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="horizontal"
+            android:scrollbars="none"
             android:id="@+id/notes"/>
         <TextView
             android:layout_width="match_parent"
@@ -43,7 +44,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="horizontal"
+            android:scrollbars="none"
             android:id="@+id/resources"/>
         <TextView
             android:layout_width="match_parent"
@@ -54,7 +55,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="horizontal"
+            android:scrollbars="none"
             android:id="@+id/research"/>
     </LinearLayout>
 </ScrollView>
