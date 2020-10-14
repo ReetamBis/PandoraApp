@@ -7,23 +7,25 @@
     tools:context=".DashBoard"
     android:orientation="vertical">
 
-    <include layout="@layout/app_bar" />
+    <include layout="@layout/app_bar"
+        />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
     <com.google.android.material.tabs.TabLayout
-    android:id="@+id/tabLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="?actionBarSize"
-    app:tabGravity="fill"
-    app:tabIndicatorColor="@color/white"
-    app:tabIndicatorHeight="4dp"
-    app:tabBackground="@color/white"
-    app:tabMode="fixed"/>
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:minHeight="?actionBarSize"
+        app:tabBackground="@color/white"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/black"
+        app:tabIndicatorHeight="1dp"
+        app:tabMode="fixed" />
+
 
 
 </LinearLayout>
