@@ -29,8 +29,7 @@ public class Register extends AppCompatActivity {
     EditText pass;
     EditText repass;
     Button register;
-    FirebaseAuth fAuth;
-    FirebaseFirestore fStore;
+
 
      boolean checkmail(String mail,String roll){
 
@@ -109,31 +108,9 @@ public class Register extends AppCompatActivity {
 
             if(allfilled() && checkmail(email.getText().toString(),id.getText().toString()) && checkpassword(pass.getText().toString())
                     && match()){
-                fAuth.createUserWithEmailAndPassword(email.getText().toString(),pass.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        FirebaseUser user = fAuth.getCurrentUser();
-                        Toast.makeText(Register.this, "Account Created", Toast.LENGTH_SHORT).show();
-                        DocumentReference df = fStore.collection("Users").document(user.getUid());
-                        Map<String,Object> userInfo = new HashMap<>();
-
-                        userInfo.put("UserName",name.getText().toString());
-                        userInfo.put("Roll",id.getText().toString());
-                        userInfo.put("E-Mail",email.getText().toString());
-                        userInfo.put("Mobile",num.getText().toString());
-
-                        userInfo.put("isUser","1");
-                        df.set(userInfo);
-
-                        Register.this.finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Register.this, "Failed to Create !!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                User u = new User(name.getText().toString(),id.getText().toString(),email.getText().toString(),pass.getText().toString(),num.getText().toString());
+                u.createUser(getApplicationContext());
+                Register.this.finish();
             }
         }
     }
@@ -142,9 +119,6 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        fAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
 
         id = findViewById(R.id.id);
         name = findViewById(R.id.name);

@@ -62,26 +62,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void checkUsersAccessLevel(String uid){
-
-        DocumentReference df = fStore.collection("Users").document(uid);
-        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Log.d("TAG","onSuccess: "+ documentSnapshot.getData());
-
-                if(documentSnapshot.getString("isAdmin") != null){
-                    //admin intent
-                }
-
-                if(documentSnapshot.getString("isUser") != null){
-                    Intent intent1= new Intent(LoginActivity.this,com.example.pandora.DashBoard.class);
-                    startActivity(intent1);
-                    LoginActivity.this.finish();
-                }
-            }
-        });
-    }
 
     public void onClick(View view){
 
@@ -89,20 +69,8 @@ public class LoginActivity extends AppCompatActivity {
 
             if(checkpassword(pass.getText().toString())){
 
-                fAuth.signInWithEmailAndPassword(mail.getText().toString(),pass.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-
-                        Toast.makeText(LoginActivity.this, "Successfully Logged In !!", Toast.LENGTH_LONG).show();
-                        checkUsersAccessLevel(authResult.getUser().getUid());
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-
+                User user = new User(mail.getText().toString(),pass.getText().toString());
+                user.loginuser(getApplicationContext());
                 LoginActivity.this.finish();
             }
             else
