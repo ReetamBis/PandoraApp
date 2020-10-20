@@ -2,4 +2,28 @@
     <string name="app_name">Pandora</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="spinner">Select</string>
+
+    <string-array name="paper">
+        <item>AI</item>
+        <item>CN</item>
+        <item>DAA</item>
+        <item>DMDW</item>
+        <item>HPCA</item>
+        <item>SE</item>
+    </string-array>
+
+    <string-array name="year">
+        <item>2015</item>
+        <item>2016</item>
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+    </string-array>
+
+    <string-array name="type">
+        <item>MID-SEM</item>
+        <item>END-SEM</item>
+    </string-array>
+
 </resources>

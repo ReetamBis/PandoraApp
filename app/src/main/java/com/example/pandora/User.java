@@ -26,6 +26,8 @@ public class User {
     private String mail;
     private String pass;
     private String mob;
+    private String isUser;
+    private String isAdmin;
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -36,6 +38,8 @@ public class User {
         this.mail = mail;
         this.pass = pass;
         this.mob = mob;
+        this.isAdmin = "0";
+        this.isUser = "1";
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
     }
@@ -60,7 +64,7 @@ public class User {
                 userInfo.put("Roll",roll);
                 userInfo.put("E-Mail",mail);
                 userInfo.put("Mobile",mob);
-
+                userInfo.put("isAdmin","0");
                 userInfo.put("isUser","1");
                 df.set(userInfo);
 
@@ -81,11 +85,11 @@ public class User {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("TAG","onSuccess: "+ documentSnapshot.getData());
 
-                if(documentSnapshot.getString("isAdmin") != null){
+                /*if(documentSnapshot.getString("isAdmin").equals("1")){
                     //admin intent
-                }
+                }*/
 
-                if(documentSnapshot.getString("isUser") != null){
+                if(documentSnapshot.getString("isUser").equals("1")){
                     Intent intent1= new Intent(context,com.example.pandora.DashBoard.class);
                     context.startActivity(intent1);
                 }

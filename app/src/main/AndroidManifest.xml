@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pandora">
+        <activity android:name=".question_paper_upload"></activity>
         <activity android:name=".DashBoard" />
         <activity android:name=".Register" />
         <activity android:name=".LoginActivity" />
