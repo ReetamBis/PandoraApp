@@ -8,17 +8,16 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,9 +28,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -41,82 +38,82 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.Map;
 
-public class question_paper_upload extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class notes_upload extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    Spinner sub;
-    Spinner year;
-    Spinner type;
-    PrevPaper p;
-    String subject,sem,yy,uid;
+    Spinner subj;
+    String subject,teacher,uid;
     Button upload,select;
     FirebaseUser currentFirebaseUser;
     Uri pdfUri;
-    TextView notify;
+    TextView notifyn;
     FirebaseFirestore fStore;
     FirebaseStorage storage;
     ProgressDialog progressDialog;
+    EditText teachern;
+    Notes n;
 
-    public void onUploadpaper(View view){
+    public void onUploadnotes(View view){
 
-        if(view.getId() == R.id.select){
+        if(view.getId() == R.id.selectnotes){
 
-            if(ContextCompat.checkSelfPermission(question_paper_upload.this, Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
+            if(ContextCompat.checkSelfPermission(notes_upload.this, Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
                 selectPdf();
             }
             else
-                ActivityCompat.requestPermissions(question_paper_upload.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},9);
+                ActivityCompat.requestPermissions(notes_upload.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},9);
         }
 
-        if(view.getId() == R.id.upload){
+        if(view.getId() == R.id.uploadnotes){
 
             currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
             uid = currentFirebaseUser.getUid().toString();
-            p = new PrevPaper(subject,yy,sem,uid);
+            teacher = teachern.getText().toString();
+            n = new Notes(subject,uid,teacher);
 
             if(pdfUri!=null)
-                uploadFile(pdfUri,p);
+                uploadFile(pdfUri,n);
             else
-               Toast.makeText(this,"Select a file ..",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Select a file ..",Toast.LENGTH_SHORT).show();
         }
     }
 
+    public void uploadFile(Uri pdfUri, Notes n){
 
-    public void uploadFile(Uri pdfUri, PrevPaper p){
-
-        progressDialog = new ProgressDialog(question_paper_upload.this);
+        progressDialog = new ProgressDialog(notes_upload .this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading File.......");
         progressDialog.setProgress(0);
         progressDialog.show();
 
         StorageReference storageReference = storage.getReference();
-        storageReference.child("PaperUpload").child(p.getSubject()).child(p.getType()).child(p.getFilename()).putFile(pdfUri)
+        storageReference.child("NotesUpload").child(n.getSubject()).child(n.getFilename()).putFile(pdfUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-                        DocumentReference df = fStore.collection("PrevPaper").document(p.getSubject()).collection(p.getType()).document(p.getFilename());
+                        DocumentReference df = fStore.collection("Notes").document(n.getSubject()).collection(n.getSubject()).document(n.getFilename());
                         Map<String,Object> paperInfo = new HashMap<>();
-                        paperInfo.put("UserID",p.getUid());
-                        paperInfo.put("Date/Time",p.getDateTime());
-                        paperInfo.put("Year",p.getYear());
-                        paperInfo.put("Visible",p.getCheckBit());
+                        paperInfo.put("UserID",n.getUid());
+                        paperInfo.put("Date/Time",n.getDateTime());
+                        paperInfo.put("Visible",n.getCheckBit());
                         paperInfo.put("URL",url);
+                        paperInfo.put("Teacher",n.getTeacher());
+                        paperInfo.put("Rating",n.getRating());
                         df.set(paperInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
                                 if(task.isSuccessful())
-                                    Toast.makeText(question_paper_upload.this,"File Successfully Uploaded",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(notes_upload.this,"File Successfully Uploaded",Toast.LENGTH_SHORT).show();
                                 else
-                                    Toast.makeText(question_paper_upload.this,"Error!! File not uploaded",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(notes_upload.this,"Error!! File not uploaded",Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(question_paper_upload.this,"Error!! File not uploaded",Toast.LENGTH_SHORT).show();
+                Toast.makeText(notes_upload.this,"Error!! File not uploaded",Toast.LENGTH_SHORT).show();
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -169,7 +166,7 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
 
         if (requestCode==86 && resultCode == RESULT_OK && data!=null) {
             pdfUri = data.getData();
-            notify.setText("The file Selected : "+data.getData().getLastPathSegment());
+            notifyn.setText("The file Selected : "+data.getData().getLastPathSegment());
         }
         else
             Toast.makeText(this,"Please Select a File",Toast.LENGTH_SHORT).show();
@@ -178,52 +175,33 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_question_paper_upload);
+        setContentView(R.layout.activity_notes_upload);
 
-        sub = findViewById(R.id.sub);
-        year = findViewById(R.id.year);
-        type = findViewById(R.id.type);
-        upload = findViewById(R.id.upload);
-        select = findViewById(R.id.select);
-        notify = findViewById(R.id.notify);
+        subj = findViewById(R.id.subnotes);
+        upload = findViewById(R.id.uploadnotes);
+        select = findViewById(R.id.selectnotes);
+        notifyn = findViewById(R.id.notifynotes);
+        teachern = findViewById(R.id.teacher);
 
-        sub.setOnItemSelectedListener(this);
-        year.setOnItemSelectedListener(this);
-        type.setOnItemSelectedListener(this);
+        subj.setOnItemSelectedListener(this);
 
         fStore = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
 
-        ArrayAdapter<String> subAdapter = new ArrayAdapter<String>(question_paper_upload.this,
+        ArrayAdapter<String> subAdapter = new ArrayAdapter<String>(notes_upload.this,
                 R.layout.custom_spinner,getResources().getStringArray(R.array.paper));
         subAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
-        sub.setAdapter(subAdapter);
+        subj.setAdapter(subAdapter);
 
-        ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(question_paper_upload.this,
-                R.layout.custom_spinner,getResources().getStringArray(R.array.year));
-        yearAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
-        year.setAdapter(yearAdapter);
-
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(question_paper_upload.this,
-                R.layout.custom_spinner,getResources().getStringArray(R.array.type));
-        typeAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
-        type.setAdapter(typeAdapter);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        if(parent.getId()==R.id.sub){
+        if(parent.getId()==R.id.subnotes){
             subject = parent.getItemAtPosition(position).toString();
         }
 
-        if(parent.getId()==R.id.year){
-            yy = parent.getItemAtPosition(position).toString();
-        }
-
-        if(parent.getId()==R.id.type){
-            sem = parent.getItemAtPosition(position).toString();
-        }
     }
 
     @Override
