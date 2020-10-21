@@ -7,9 +7,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,9 +20,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,6 +34,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class question_paper_upload extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -36,14 +49,14 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
     PrevPaper p;
     String subject,sem,yy,uid;
     Button upload,select;
-    FirebaseAuth fAuth;
-    FirebaseFirestore fStore;
-    FirebaseStorage storage;
-    FirebaseDatabase database;
     FirebaseUser currentFirebaseUser;
     Uri pdfUri;
+    TextView notify;
+    FirebaseFirestore fStore;
+    FirebaseStorage storage;
+    ProgressDialog progressDialog;
 
-    void onUploadpaper(View view){
+    public void onUploadpaper(View view){
 
         if(view.getId() == R.id.select){
 
@@ -60,8 +73,58 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
             uid = currentFirebaseUser.getUid().toString();
             p = new PrevPaper(subject,yy,sem,uid);
 
-
+            if(pdfUri!=null)
+                uploadFile(pdfUri,p);
+            else
+               Toast.makeText(this,"Select a file ..",Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    public void uploadFile(Uri pdfUri, PrevPaper p){
+
+        progressDialog = new ProgressDialog(question_paper_upload.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Uploading File.......");
+        progressDialog.setProgress(0);
+        progressDialog.show();
+
+        StorageReference storageReference = storage.getReference();
+        storageReference.child("PaperUpload").child(p.getSubject()).child(p.getType()).child(p.getFilename()).putFile(pdfUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                        DocumentReference df = fStore.collection("PrevPaper").document(p.getSubject()).collection(p.getType()).document(p.filename);
+                        Map<String,Object> paperInfo = new HashMap<>();
+                        paperInfo.put("UserID",p.getUid());
+                        paperInfo.put("Date/Time",p.getDateTime());
+                        paperInfo.put("Year",p.getYear());
+                        paperInfo.put("Visible",p.getCheckBit());
+                        paperInfo.put("URL",url);
+                        df.set(paperInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                                if(task.isSuccessful())
+                                    Toast.makeText(question_paper_upload.this,"File Successfully Uploaded",Toast.LENGTH_SHORT).show();
+                                else
+                                    Toast.makeText(question_paper_upload.this,"Error!! File not uploaded",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(question_paper_upload.this,"Error!! File not uploaded",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                int currentProgress = (int) (100*snapshot.getBytesTransferred()/snapshot.getTotalByteCount());
+                progressDialog.setProgress(currentProgress);
+            }
+        });
     }
 
     @Override
@@ -73,16 +136,43 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
             Toast.makeText(this, "Please Provide Permission", Toast.LENGTH_SHORT).show();
     }
 
-    void selectPdf(){
+    public void selectPdf(){
         Intent intent = new Intent();
-        intent.setType("application/pdf");
+
+        String[] mimeTypes =
+                {"application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                        "application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                        "application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
+                        "text/plain",
+                        "application/pdf"};
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            intent.setType(mimeTypes.length == 1 ? mimeTypes[0] : "*/*");
+            if (mimeTypes.length > 0) {
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+            }
+        } else {
+            String mimeTypesStr = "";
+            for (String mimeType : mimeTypes) {
+                mimeTypesStr += mimeType + "|";
+            }
+            intent.setType(mimeTypesStr.substring(0,mimeTypesStr.length() - 1));
+        }
+
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent,86);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode==86 && resultCode == RESULT_OK && data!=null) {
+            pdfUri = data.getData();
+            notify.setText("The file Selected : "+data.getData().getLastPathSegment());
+        }
+        else
+            Toast.makeText(this,"Please Select a File",Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -94,17 +184,15 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
         year = findViewById(R.id.year);
         type = findViewById(R.id.type);
         upload = findViewById(R.id.upload);
-        select = findViewById(R.id.upload);
+        select = findViewById(R.id.select);
+        notify = findViewById(R.id.notify);
 
         sub.setOnItemSelectedListener(this);
         year.setOnItemSelectedListener(this);
         type.setOnItemSelectedListener(this);
 
-        fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
-
         storage = FirebaseStorage.getInstance();
-        database = FirebaseDatabase.getInstance();
 
         ArrayAdapter<String> subAdapter = new ArrayAdapter<String>(question_paper_upload.this,
                 R.layout.custom_spinner,getResources().getStringArray(R.array.paper));
