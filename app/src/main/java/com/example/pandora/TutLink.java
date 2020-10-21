@@ -1,31 +1,30 @@
 package com.example.pandora;
+
 import java.util.Calendar;
 
-public class Notes {
+public class TutLink {
 
     private String filename;
     private String dateTime;
     private  String subject;
-    private String teacher;
+    private String title;
+    private String link;
     private String uid;
     private Calendar cal;
     private String checkBit;
     private String rating;
 
-    public Notes(String subject,String uid,String teacher) {
+    public TutLink(String subject,String uid,String link,String title) {
 
         this.cal = Calendar.getInstance();
         this.subject = subject;
         this.uid = uid;
+        this.title = title;
         this.dateTime = cal.getTime().toString();
-        this.filename = this.subject+" "+this.dateTime;
+        this.filename = this.subject+" "+this.title+" "+this.dateTime;
         this.checkBit = "0";
         this.rating = "0";
-        if(!teacher.equals("")){
-            this.teacher = teacher;
-        }
-        else
-            this.teacher = "Unknown";
+        this.link = link;
     }
 
     public String getFilename() {
@@ -40,8 +39,12 @@ public class Notes {
         return subject;
     }
 
-    public String getTeacher() {
-        return teacher;
+    public String getTitle() {
+        return title;
+    }
+
+    public String getLink() {
+        return link;
     }
 
     public String getUid() {

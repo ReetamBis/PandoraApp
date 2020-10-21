@@ -95,6 +95,16 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        tut.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent= new Intent(getActivity(),com.example.pandora.Tutorial.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 }

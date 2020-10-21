@@ -92,14 +92,14 @@ public class notes_upload extends AppCompatActivity implements AdapterView.OnIte
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
                         DocumentReference df = fStore.collection("Notes").document(n.getSubject()).collection(n.getSubject()).document(n.getFilename());
-                        Map<String,Object> paperInfo = new HashMap<>();
-                        paperInfo.put("UserID",n.getUid());
-                        paperInfo.put("Date/Time",n.getDateTime());
-                        paperInfo.put("Visible",n.getCheckBit());
-                        paperInfo.put("URL",url);
-                        paperInfo.put("Teacher",n.getTeacher());
-                        paperInfo.put("Rating",n.getRating());
-                        df.set(paperInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        Map<String,Object> notesInfo = new HashMap<>();
+                        notesInfo.put("UserID",n.getUid());
+                        notesInfo.put("Date/Time",n.getDateTime());
+                        notesInfo.put("Visible",n.getCheckBit());
+                        notesInfo.put("URL",url);
+                        notesInfo.put("Teacher",n.getTeacher());
+                        notesInfo.put("Rating",n.getRating());
+                        df.set(notesInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
