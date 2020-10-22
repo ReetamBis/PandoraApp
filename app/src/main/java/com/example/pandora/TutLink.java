@@ -1,27 +1,30 @@
 package com.example.pandora;
+
 import java.util.Calendar;
 
-public class PrevPaper {
+public class TutLink {
 
     private String filename;
     private String dateTime;
-    private String subject;
-    private String year;
-    private String type;
+    private  String subject;
+    private String title;
+    private String link;
     private String uid;
     private Calendar cal;
     private String checkBit;
+    private String rating;
 
-    public PrevPaper(String subject, String year, String type, String uid) {
+    public TutLink(String subject,String uid,String link,String title) {
 
         this.cal = Calendar.getInstance();
         this.subject = subject;
-        this.year = year;
-        this.type = type;
         this.uid = uid;
+        this.title = title;
         this.dateTime = cal.getTime().toString();
-        this.filename = this.subject+" "+this.year+" "+this.type+" "+this.dateTime;
+        this.filename = this.subject+" "+this.title+" "+this.dateTime;
         this.checkBit = "0";
+        this.rating = "0";
+        this.link = link;
     }
 
     public String getFilename() {
@@ -36,12 +39,12 @@ public class PrevPaper {
         return subject;
     }
 
-    public String getYear() {
-        return year;
+    public String getTitle() {
+        return title;
     }
 
-    public String getType() {
-        return type;
+    public String getLink() {
+        return link;
     }
 
     public String getUid() {
@@ -50,5 +53,9 @@ public class PrevPaper {
 
     public String getCheckBit() {
         return checkBit;
+    }
+
+    public String getRating() {
+        return rating;
     }
 }

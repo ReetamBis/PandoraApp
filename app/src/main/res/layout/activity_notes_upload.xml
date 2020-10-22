@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bd"
-    tools:context=".question_paper_upload">
+    tools:context=".notes_upload">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#A4070707"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="#A4070707"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="UPLOAD PAPER"
+                android:text="UPLOAD NOTES"
                 android:textAlignment="center"
                 android:textColor="#AE6902"
                 android:textSize="30sp"
@@ -53,7 +53,7 @@
                     android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/sub"
+                    android:id="@+id/subnotes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -85,67 +85,28 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="10dp"
-                    android:text="Year :"
+                    android:text="Teacher :"
                     android:textColor="#AE6902"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/year"
+                <EditText
+                    android:id="@+id/teacher"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginBottom="10dp"
-                    android:prompt="@string/spinner"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:visibility="visible">
-
-                </Spinner>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:background="@android:color/transparent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="Type :"
-                    android:textColor="#AE6902"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginBottom="10dp"
-                    android:prompt="@string/spinner"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:visibility="visible">
-
-                </Spinner>
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@android:color/transparent"
+                    android:padding="15dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white" />
 
             </LinearLayout>
 
             <Button
-                android:id="@+id/select"
+                android:id="@+id/selectnotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
@@ -153,14 +114,14 @@
                 android:layout_marginEnd="50dp"
                 android:background="@drawable/button_login"
                 android:backgroundTint="#10173C"
-                android:onClick="onUploadpaper"
+                android:onClick="onUploadnotes"
                 android:text="Select"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/notify"
+                android:id="@+id/notifynotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -171,7 +132,7 @@
                 android:textStyle="italic" />
 
             <Button
-                android:id="@+id/upload"
+                android:id="@+id/uploadnotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
@@ -179,7 +140,7 @@
                 android:layout_marginEnd="50dp"
                 android:background="@drawable/button_login"
                 android:backgroundTint="#10173C"
-                android:onClick="onUploadpaper"
+                android:onClick="onUploadnotes"
                 android:text="Upload"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
