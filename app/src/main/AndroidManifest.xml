@@ -17,6 +17,8 @@
         <activity android:name=".question_paper_upload" />
         <activity android:name=".DashBoard" />
         <activity android:name=".Register" />
+        <activity android:name=".AvailableSubjectResource"/>
+        <activity android:name=".AllOptions"/>
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

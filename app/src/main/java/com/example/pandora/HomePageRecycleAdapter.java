@@ -53,7 +53,7 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter<HomePageRecycle
     public void onBindViewHolder(@NonNull PlaceHolder holder, int position) {
         holder.sub.setText(subject.get(position));
         Random rnd = new Random();
-        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        int color = Color.argb(255, 20, rnd.nextInt(100), 140);
         holder.card.setCardBackgroundColor(color);
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override

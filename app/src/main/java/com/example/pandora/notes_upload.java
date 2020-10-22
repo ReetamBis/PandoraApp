@@ -91,6 +91,9 @@ public class notes_upload extends AppCompatActivity implements AdapterView.OnIte
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                        Map<String,Object> f=new HashMap<>();
+                        f.put("F",1);
+                        fStore.collection("Notes").document(n.getSubject()).set(f);
                         DocumentReference df = fStore.collection("Notes").document(n.getSubject()).collection(n.getSubject()).document(n.getFilename());
                         Map<String,Object> notesInfo = new HashMap<>();
                         notesInfo.put("UserID",n.getUid());

@@ -144,34 +144,26 @@ public class HomeFragment extends Fragment {
         });
 
         prepaper.setAdapter(prepaperAdap);
-        notes.setAdapter(prepaperAdap);
-        resources.setAdapter(prepaperAdap);
-        research.setAdapter(prepaperAdap);
+        notes.setAdapter(notesAdap);
+        resources.setAdapter(resourcesAdap);
+        research.setAdapter(researchAdap);
 
         createprevsubList();
+        createnotessublist();
+        createresearchsublist();
+        createresourcesublist();
         return view;
     }
     public  void createprevsubList()
     {
-        Log.i("Mylog:","Callin query");
         db.collection("PrevPaper").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                Log.i("Mylog:","Success");
-                if(queryDocumentSnapshots==null)
-                {
-                    Log.i("Mylog:","Nothing Found");
-                }
-                else {
-                    Log.i("Mylog:","Is Empty:"+ (queryDocumentSnapshots.isEmpty()));
-                    Log.i("Mylog:",queryDocumentSnapshots.toString());
-                    for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-                        Log.i("Mylog:", d.getMetadata().getClass().getName());
 
-                        prevsubject.add(d.getId());
-                    }
-                    prepaperAdap.notifyDataSetChanged();
+                for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
+                    prevsubject.add(d.getId());
                 }
+                prepaperAdap.notifyDataSetChanged();
             }
         });
 
@@ -183,20 +175,39 @@ public class HomeFragment extends Fragment {
         db.collection("Notes").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for(QueryDocumentSnapshot d:queryDocumentSnapshots)
-                {
-                    notessubject.add(d.getId());
-                }
+
+                    for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
+                        notessubject.add(d.getId());
+                    }
+                    notesAdap.notifyDataSetChanged();
             }
         });
-        notesAdap.notifyDataSetChanged();
+
     }
     public void createresourcesublist()
     {
-        resourcesAdap.notifyDataSetChanged();
+        db.collection("Tutorials").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
+                    resourcesubject.add(d.getId());
+                }
+                resourcesAdap.notifyDataSetChanged();
+            }
+        });
     }
     public void createresearchsublist()
     {
-        researchAdap.notifyDataSetChanged();
+        db.collection("ResearchPaper").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
+                    researchsubject.add(d.getId());
+                }
+                researchAdap.notifyDataSetChanged();
+            }
+        });
     }
 }
