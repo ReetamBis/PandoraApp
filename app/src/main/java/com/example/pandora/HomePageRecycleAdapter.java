@@ -16,12 +16,18 @@ import java.util.Random;
 
 public class HomePageRecycleAdapter extends RecyclerView.Adapter<HomePageRecycleAdapter.PlaceHolder>
 {
+    interface clicklistener
+    {
+        public void onclick(int pos);
+    }
     Context context;
     ArrayList<String> subject=new ArrayList<>();
-    public HomePageRecycleAdapter(Context context,ArrayList<String> sub)
+    clicklistener cl;
+    public HomePageRecycleAdapter(Context context,ArrayList<String> sub,clicklistener cl)
     {
         this.context=context;
         subject=sub;
+        this.cl=cl;
     }
     public class PlaceHolder extends RecyclerView.ViewHolder
     {
@@ -49,6 +55,12 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter<HomePageRecycle
         Random rnd = new Random();
         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
         holder.card.setCardBackgroundColor(color);
+        holder.card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cl.onclick(position);
+            }
+        });
     }
 
     @Override

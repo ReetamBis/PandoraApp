@@ -15,9 +15,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Previous Year Papers"
+            android:text="Previous Year Papers   >>>"
             android:textSize="16sp"
-            android:textStyle="bold|italic" />
+            android:textStyle="bold|italic"
+            android:id="@+id/allprev"/>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,9 +28,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Notes"
+            android:text="Notes   >>>"
             android:textSize="16sp"
-            android:textStyle="bold|italic"/>
+            android:textStyle="bold|italic"
+            android:id="@+id/allnotes"/>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,9 +40,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Resources for Exam"
+            android:text="Resources for Exam   >>>"
             android:textSize="16sp"
-            android:textStyle="bold|italic"/>
+            android:textStyle="bold|italic"
+            android:id="@+id/allresource"/>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,9 +52,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Research Paper"
+            android:text="Research Paper   >>>"
             android:textSize="16sp"
-            android:textStyle="bold|italic"/>
+            android:textStyle="bold|italic"
+            android:id="@+id/allresearch"/>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

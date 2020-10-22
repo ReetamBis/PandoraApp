@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "277013256971",
+    "firebase_url": "https://pandora-8cd14.firebaseio.com",
+    "project_id": "pandora-8cd14",
+    "storage_bucket": "pandora-8cd14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277013256971:android:8a036ce03a53875cf4a00e",
+        "android_client_info": {
+          "package_name": "com.example.pandora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "277013256971-qd4c2dqn3f16270jcc1bttjhn1p082j5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pandora",
+            "certificate_hash": "6747d251a24e112689c3e75f94a86509077efae1"
+          }
+        },
+        {
+          "client_id": "277013256971-b0jdosvlfr1r9a8cs07p0429t20v1ufm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKq_Pii2esQ8a-cOUFwwyi8Ij-fqaEYyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "277013256971-b0jdosvlfr1r9a8cs07p0429t20v1ufm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
