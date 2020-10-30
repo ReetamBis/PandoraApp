@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -72,7 +73,15 @@ public class LoginActivity extends AppCompatActivity {
 
                 User user = new User(mail.getText().toString(),pass.getText().toString());
                 user.loginuser(getApplicationContext());
-                LoginActivity.this.finish();
+                final Handler handler = new Handler();
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        LoginActivity.this.finish();
+                    }
+                }, 4000);
+
             }
             else
                 Toast.makeText(LoginActivity.this, "Wrong UserId or Password !!", Toast.LENGTH_LONG).show();
