@@ -332,11 +332,40 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="40dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginEnd="50dp"
                     android:background="@drawable/button_login"
                     android:backgroundTint="#10173C"
                     android:onClick="onReg"
                     android:text="Register"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/verifyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="After Verifying through email ..... Click Done !!"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:textAlignment="center"
+                    android:textColor="#981107"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/verbut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="50dp"
+                    android:background="@drawable/button_login"
+                    android:backgroundTint="#10173C"
+                    android:onClick="onReg"
+                    android:text="Verify"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="20sp" />

@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -101,10 +102,15 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(FirebaseAuth.getInstance().getCurrentUser() != null){
-            Intent intent1= new Intent(LoginActivity.this,com.example.pandora.DashBoard.class);
-            startActivity(intent1);
-            LoginActivity.this.finish();
+        FirebaseUser user = fAuth.getCurrentUser();
+        if(user != null){
+            if(user.isEmailVerified()) {
+                Intent intent1 = new Intent(LoginActivity.this, com.example.pandora.DashBoard.class);
+                startActivity(intent1);
+                LoginActivity.this.finish();
+            }
+            else
+                Toast.makeText(LoginActivity.this, "Verify your E-mail first.", Toast.LENGTH_SHORT).show();
         }
     }
 }

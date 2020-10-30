@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,7 +29,9 @@ public class Register extends AppCompatActivity {
     EditText email;
     EditText pass;
     EditText repass;
-    Button register;
+    TextView verifyt;
+    Button register,verbut;
+    FirebaseAuth fAuth;
 
 
      boolean checkmail(String mail,String roll){
@@ -110,8 +113,20 @@ public class Register extends AppCompatActivity {
                     && match()){
                 User u = new User(name.getText().toString(),id.getText().toString(),email.getText().toString(),pass.getText().toString(),num.getText().toString());
                 u.createUser(getApplicationContext());
-                Register.this.finish();
+                verifyt.setVisibility(View.VISIBLE);
+                verbut.setVisibility(View.VISIBLE);
             }
+        }
+
+        if(view.getId()==R.id.verbut){
+
+            FirebaseUser user = fAuth.getCurrentUser();
+
+            if(!user.isEmailVerified()){
+                Toast.makeText(Register.this, "Verify your E-mail ", Toast.LENGTH_SHORT).show();
+            }
+            else
+                Register.this.finish();
         }
     }
 
@@ -127,6 +142,13 @@ public class Register extends AppCompatActivity {
         pass = findViewById(R.id.pass);
         repass = findViewById(R.id.repass);
         register = findViewById(R.id.register);
+        verifyt = findViewById(R.id.verifyt);
+        verbut = findViewById(R.id.verbut);
+        fAuth = FirebaseAuth.getInstance();
+
+        verifyt.setVisibility(View.INVISIBLE);
+        verbut.setVisibility(View.INVISIBLE);
+
 
     }
 }

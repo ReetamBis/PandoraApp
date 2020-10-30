@@ -57,6 +57,22 @@ public class User {
             @Override
             public void onSuccess(AuthResult authResult) {
                 FirebaseUser user = fAuth.getCurrentUser();
+
+                user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Toast.makeText(context,"Verification Email has been sent .",Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        Toast.makeText(context,"E-mail not sent"+e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
                 DocumentReference df = fStore.collection("Users").document(user.getUid());
                 Map<String,Object> userInfo = new HashMap<>();
                 Toast.makeText(context, "Account Created", Toast.LENGTH_SHORT).show();
@@ -97,21 +113,25 @@ public class User {
         });
     }
 
-    public void loginuser(Context context){
+     public void loginuser(Context context){
+        FirebaseUser user = fAuth.getCurrentUser();
+        fAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener((task)->{
 
-        fAuth.signInWithEmailAndPassword(mail,pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
+            if(task.isSuccessful()){
 
-                Toast.makeText(context, "Successfully Logged In !!", Toast.LENGTH_LONG).show();
-                checkUsersAccessLevel(authResult.getUser().getUid(),context);
+                if(!user.isEmailVerified()){
+                    Toast.makeText(context, "Verify your E-mail first.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(context, "Successfully Logged In !!", Toast.LENGTH_LONG).show();
+                    checkUsersAccessLevel(user.getUid(), context);
+                }
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Error !!"+e.getMessage(), Toast.LENGTH_LONG).show();
-            }
+
+            else
+                Toast.makeText(context, "Error !!"+task.getException().getMessage(), Toast.LENGTH_LONG).show();
         });
+
     }
 
 }
