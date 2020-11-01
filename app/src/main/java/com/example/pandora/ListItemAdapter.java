@@ -54,7 +54,7 @@ public class ListItemAdapter  extends RecyclerView.Adapter<ListItemAdapter.Place
     @Override
     public void onBindViewHolder(@NonNull PlaceHolder holder, int position) {
             holder.sub.setText(prevPapers.get(position).getFilename());
-            holder.sub.setOnClickListener(new View.OnClickListener() {
+            holder.down.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     onitemclicklistener.onClick(prevPapers.get(position).getUrl(),prevPapers.get(position).getFilename());
