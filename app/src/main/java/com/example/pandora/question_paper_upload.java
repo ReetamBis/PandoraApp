@@ -94,25 +94,29 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-                        Map<String,Object> f=new HashMap<>();
-                        f.put("F",1);
-                        fStore.collection("PrePaper").document(p.getSubject()).set(f);
-                        DocumentReference df = fStore.collection("PrevPaper").document(p.getSubject()).collection(p.getType()).document(p.getFilename());
-                        Map<String,Object> paperInfo = new HashMap<>();
-                        paperInfo.put("UserID",p.getUid());
-                        paperInfo.put("Date/Time",p.getDateTime());
-                        paperInfo.put("Year",p.getYear());
-                        paperInfo.put("Visible",p.getCheckBit());
-                        paperInfo.put("URL",url);
-                        df.set(paperInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                            public void onSuccess(Uri uri) {
+                                Map<String,Object> f=new HashMap<>();
+                                f.put("F",1);
+                                fStore.collection("PrePaper").document(p.getSubject()).set(f);
+                                DocumentReference df = fStore.collection("PrevPaper").document(p.getSubject()).collection(p.getType()).document(p.getFilename());
+                                Map<String,Object> paperInfo = new HashMap<>();
+                                paperInfo.put("UserID",p.getUid());
+                                paperInfo.put("Date/Time",p.getDateTime());
+                                paperInfo.put("Year",p.getYear());
+                                paperInfo.put("Visible",p.getCheckBit());
+                                paperInfo.put("URL",uri.toString());
+                                df.set(paperInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
 
-                                if(task.isSuccessful())
-                                    Toast.makeText(question_paper_upload.this,"File Successfully Uploaded",Toast.LENGTH_SHORT).show();
-                                else
-                                    Toast.makeText(question_paper_upload.this,"Error!! File not uploaded",Toast.LENGTH_SHORT).show();
+                                        if(task.isSuccessful())
+                                            Toast.makeText(question_paper_upload.this,"File Successfully Uploaded",Toast.LENGTH_SHORT).show();
+                                        else
+                                            Toast.makeText(question_paper_upload.this,"Error!! File not uploaded"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         });
                     }
