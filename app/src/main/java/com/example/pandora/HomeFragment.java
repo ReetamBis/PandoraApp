@@ -1,8 +1,10 @@
 package com.example.pandora;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,72 +38,16 @@ public class HomeFragment extends Fragment {
     ArrayList<String> notessubject=new ArrayList<>();
     ArrayList<String> researchsubject=new ArrayList<>();
     ArrayList<String> resourcesubject=new ArrayList<>();
-
+    int K;
     FirebaseFirestore db= FirebaseFirestore.getInstance();
     public HomeFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
-        // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_home, container, false);
-        prepaper=view.findViewById(R.id.prepaper);
-        notes=view.findViewById(R.id.notes);
-        resources=view.findViewById(R.id.resources);
-        research=view.findViewById(R.id.research);
-
-        allnotes=view.findViewById(R.id.allnotes);
-        allprev=view .findViewById(R.id.allprev);
-        allresearch=view.findViewById(R.id.allresearch);
-        allresource=view.findViewById(R.id.allresource);
-
-        allprev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent inten=new Intent(getContext(),com.example.pandora.AllOptions.class);
-                inten.putExtra("Category","Previous Paper");
-                startActivity(inten);
-            }
-        });
-        allnotes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent inten=new Intent(getContext(),com.example.pandora.AllOptions.class);
-                inten.putExtra("Category","Notes");
-                startActivity(inten);
-            }
-        });
-        allresource.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent inten=new Intent(getContext(),com.example.pandora.AllOptions.class);
-                inten.putExtra("Category","Resources");
-                startActivity(inten);
-            }
-        });
-        allresearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent inten=new Intent(getContext(),com.example.pandora.AllOptions.class);
-                inten.putExtra("Category","Research Paper");
-                startActivity(inten);
-            }
-        });
-
-        prepaper.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        notes.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        research.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        resources.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
-
-
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        K=7;
         prepaperAdap=new HomePageRecycleAdapter(this.getActivity(), prevsubject, new HomePageRecycleAdapter.clicklistener() {
             @Override
             public void onclick(int pos) {
@@ -142,16 +88,79 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        if(prevsubject.size()==0)
+        createprevsubList();
+        if(notessubject.size()==0)
+        createnotessublist();
+        if(researchsubject.size()==0)
+        createresearchsublist();
+        if(resourcesubject.size()==0)
+        createresourcesublist();
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState)
+    {
+        // Inflate the layout for this fragment
+        View view =inflater.inflate(R.layout.fragment_home, container, false);
+        prepaper=view.findViewById(R.id.prepaper);
+        notes=view.findViewById(R.id.notes);
+        resources=view.findViewById(R.id.resources);
+        research=view.findViewById(R.id.research);
+
+        allnotes=view.findViewById(R.id.allnotes);
+        allprev=view .findViewById(R.id.allprev);
+        allresearch=view.findViewById(R.id.allresearch);
+        allresource=view.findViewById(R.id.allresource);
+
+        allprev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent inten=new Intent(getContext(),com.example.pandora.AllOptions.class);
+                inten.putExtra("Category","PrevPaper");
+                startActivity(inten);
+            }
+        });
+        allnotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent inten=new Intent(getContext(),com.example.pandora.AllOptions.class);
+                inten.putExtra("Category","Notes");
+                startActivity(inten);
+            }
+        });
+        allresource.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent inten=new Intent(getContext(),com.example.pandora.AllOptions.class);
+                inten.putExtra("Category","Tutorials");
+                startActivity(inten);
+            }
+        });
+        allresearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent inten=new Intent(getContext(),com.example.pandora.AllOptions.class);
+                inten.putExtra("Category","Research Paper");
+                startActivity(inten);
+            }
+        });
+
+        prepaper.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        notes.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        research.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        resources.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
         prepaper.setAdapter(prepaperAdap);
         notes.setAdapter(notesAdap);
         resources.setAdapter(resourcesAdap);
         research.setAdapter(researchAdap);
-
-        createprevsubList();
-        createnotessublist();
-        createresearchsublist();
-        createresourcesublist();
         return view;
     }
     public  void createprevsubList()
@@ -159,9 +168,11 @@ public class HomeFragment extends Fragment {
         db.collection("PrevPaper").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
+                int c=1;
                 for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
                     prevsubject.add(d.getId());
+                    if(c++==K)
+                        break;
                 }
                 prepaperAdap.notifyDataSetChanged();
             }
@@ -175,9 +186,11 @@ public class HomeFragment extends Fragment {
         db.collection("Notes").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
+                    int c=1;
                     for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
                         notessubject.add(d.getId());
+                        if(c++==K)
+                            break;
                     }
                     notesAdap.notifyDataSetChanged();
             }
@@ -189,9 +202,11 @@ public class HomeFragment extends Fragment {
         db.collection("Tutorials").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
+                int c=1;
                 for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
                     resourcesubject.add(d.getId());
+                    if(c++==K)
+                        break;
                 }
                 resourcesAdap.notifyDataSetChanged();
             }
@@ -202,9 +217,11 @@ public class HomeFragment extends Fragment {
         db.collection("ResearchPaper").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
+                int c=1;
                 for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
                     researchsubject.add(d.getId());
+                    if(c++==K)
+                        break;
                 }
                 researchAdap.notifyDataSetChanged();
             }

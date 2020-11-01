@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="spinnr">#DD131313</color>
     <color name="dropback">#10173C</color>
+    <color name="appbarbackground">#10191f</color>
 </resources>
