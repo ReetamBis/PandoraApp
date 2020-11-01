@@ -90,26 +90,31 @@ public class notes_upload extends AppCompatActivity implements AdapterView.OnIte
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-                        Map<String,Object> f=new HashMap<>();
-                        f.put("F",1);
-                        fStore.collection("Notes").document(n.getSubject()).set(f);
-                        DocumentReference df = fStore.collection("Notes").document(n.getSubject()).collection(n.getSubject()).document(n.getFilename());
-                        Map<String,Object> notesInfo = new HashMap<>();
-                        notesInfo.put("UserID",n.getUid());
-                        notesInfo.put("Date/Time",n.getDateTime());
-                        notesInfo.put("Visible",n.getCheckBit());
-                        notesInfo.put("URL",url);
-                        notesInfo.put("Teacher",n.getTeacher());
-                        notesInfo.put("Rating",n.getRating());
-                        df.set(notesInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                            public void onSuccess(Uri uri) {
+                                Map<String, Object> f = new HashMap<>();
+                                f.put("F", 1);
+                                fStore.collection("Notes").document(n.getSubject()).set(f);
+                                DocumentReference df = fStore.collection("Notes").document(n.getSubject()).collection(n.getSubject()).document(n.getFilename());
+                                Map<String, Object> notesInfo = new HashMap<>();
+                                notesInfo.put("UserID", n.getUid());
+                                notesInfo.put("Date/Time", n.getDateTime());
+                                notesInfo.put("Visible", n.getCheckBit());
+                                notesInfo.put("URL", uri);
+                                notesInfo.put("Teacher", n.getTeacher());
+                                notesInfo.put("Rating", n.getRating());
+                                df.set(notesInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
 
-                                if(task.isSuccessful())
-                                    Toast.makeText(notes_upload.this,"File Successfully Uploaded",Toast.LENGTH_SHORT).show();
-                                else
-                                    Toast.makeText(notes_upload.this,"Error!! File not uploaded",Toast.LENGTH_SHORT).show();
+                                        if (task.isSuccessful())
+                                            Toast.makeText(notes_upload.this, "File Successfully Uploaded", Toast.LENGTH_SHORT).show();
+                                        else
+                                            Toast.makeText(notes_upload.this, "Error!! File not uploaded", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
                             }
                         });
                     }
