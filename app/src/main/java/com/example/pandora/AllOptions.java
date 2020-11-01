@@ -44,7 +44,7 @@ public class AllOptions extends AppCompatActivity {
             @Override
             public void onclick(int pos) {
                 Intent intent=new Intent(getBaseContext(),com.example.pandora.AvailableSubjectResource.class);
-                intent.putExtra("Category","Research Paper");
+                intent.putExtra("Category",category);
                 intent.putExtra("Subject",subjects.get(pos));
                 startActivity(intent);
             }

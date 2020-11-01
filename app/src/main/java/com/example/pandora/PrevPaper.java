@@ -1,4 +1,7 @@
 package com.example.pandora;
+import android.net.Uri;
+
+import java.net.URL;
 import java.util.Calendar;
 
 public class PrevPaper {
@@ -11,6 +14,19 @@ public class PrevPaper {
     private String uid;
     private Calendar cal;
     private String checkBit;
+    private Uri url;
+    public PrevPaper(String filename, String dateTime, String subject, String year, String type, Uri url) {
+        this.filename = filename;
+        this.dateTime = dateTime;
+        this.subject = subject;
+        this.year = year;
+        this.type = type;
+        this.url=url;
+    }
+
+    public Uri getUrl() {
+        return url;
+    }
 
     public PrevPaper(String subject, String year, String type, String uid) {
 

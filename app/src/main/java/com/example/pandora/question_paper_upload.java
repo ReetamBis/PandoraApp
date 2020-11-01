@@ -99,7 +99,7 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
                             public void onSuccess(Uri uri) {
                                 Map<String,Object> f=new HashMap<>();
                                 f.put("F",1);
-                                fStore.collection("PrePaper").document(p.getSubject()).set(f);
+                                fStore.collection("PrevPaper").document(p.getSubject()).set(f);
                                 DocumentReference df = fStore.collection("PrevPaper").document(p.getSubject()).collection(p.getType()).document(p.getFilename());
                                 Map<String,Object> paperInfo = new HashMap<>();
                                 paperInfo.put("UserID",p.getUid());

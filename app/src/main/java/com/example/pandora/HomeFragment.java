@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onclick(int pos) {
                 Intent intent=new Intent(getContext(),com.example.pandora.AvailableSubjectResource.class);
-                intent.putExtra("Category","Previous Paper");
+                intent.putExtra("Category","PrevPaper");
                 intent.putExtra("Subject",prevsubject.get(pos));
                 startActivity(intent);
             }
@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onclick(int pos) {
                 Intent intent=new Intent(getContext(),com.example.pandora.AvailableSubjectResource.class);
-                intent.putExtra("Category","Resources");
+                intent.putExtra("Category","Tutorials");
                 intent.putExtra("Subject",resourcesubject.get(pos));
                 startActivity(intent);
             }
