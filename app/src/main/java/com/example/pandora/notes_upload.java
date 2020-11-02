@@ -96,12 +96,12 @@ public class notes_upload extends AppCompatActivity implements AdapterView.OnIte
                                 Map<String, Object> f = new HashMap<>();
                                 f.put("F", 1);
                                 fStore.collection("Notes").document(n.getSubject()).set(f);
-                                DocumentReference df = fStore.collection("Notes").document(n.getSubject()).collection(n.getSubject()).document(n.getFilename());
+                                DocumentReference df = fStore.collection("Notes").document(n.getSubject()+"s").collection(n.getSubject()).document(n.getFilename());
                                 Map<String, Object> notesInfo = new HashMap<>();
                                 notesInfo.put("UserID", n.getUid());
                                 notesInfo.put("Date/Time", n.getDateTime());
                                 notesInfo.put("Visible", n.getCheckBit());
-                                notesInfo.put("URL", uri);
+                                notesInfo.put("URL", uri.toString());
                                 notesInfo.put("Teacher", n.getTeacher());
                                 notesInfo.put("Rating", n.getRating());
                                 df.set(notesInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -115,6 +115,11 @@ public class notes_upload extends AppCompatActivity implements AdapterView.OnIte
                                     }
                                 });
 
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(notes_upload.this,"Error!! "+e.getMessage(),Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
