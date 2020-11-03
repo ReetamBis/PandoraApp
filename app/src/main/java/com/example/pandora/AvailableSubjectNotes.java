@@ -114,6 +114,6 @@ public class AvailableSubjectNotes extends AppCompatActivity {
     {
         StringTokenizer st =new StringTokenizer(s);
         String s1=st.nextToken();
-        return s1;
+        return s;
     }
 }
