@@ -51,87 +51,33 @@ public class User {
         fStore = FirebaseFirestore.getInstance();
     }
 
-    public void createUser(Context context){
-        boolean flag = false;
-        fAuth.createUserWithEmailAndPassword(mail,pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                FirebaseUser user = fAuth.getCurrentUser();
-
-                user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                        Toast.makeText(context,"Verification Email has been sent .",Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        Toast.makeText(context,"E-mail not sent"+e.getMessage(),Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-                DocumentReference df = fStore.collection("Users").document(user.getUid());
-                Map<String,Object> userInfo = new HashMap<>();
-                Toast.makeText(context, "Account Created", Toast.LENGTH_SHORT).show();
-                userInfo.put("UserName",name);
-                userInfo.put("Roll",roll);
-                userInfo.put("E-Mail",mail);
-                userInfo.put("Mobile",mob);
-                userInfo.put("isAdmin","0");
-                userInfo.put("isUser","1");
-                df.set(userInfo);
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Error !!"+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+    public String getName() {
+        return name;
     }
 
-    public void checkUsersAccessLevel(String uid,Context context){
-
-        DocumentReference df = fStore.collection("Users").document(uid);
-        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Log.d("TAG","onSuccess: "+ documentSnapshot.getData());
-
-                /*if(documentSnapshot.getString("isAdmin").equals("1")){
-                    //admin intent
-                }*/
-
-                if(documentSnapshot.getString("isUser").equals("1")){
-                    Intent intent1= new Intent(context,com.example.pandora.DashBoard.class);
-                    context.startActivity(intent1);
-                }
-            }
-        });
+    public String getRoll() {
+        return roll;
     }
 
-     public void loginuser(Context context){
-        //FirebaseUser user = fAuth.getCurrentUser();
-        fAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener((task)->{
-
-            if(task.isSuccessful()){
-                FirebaseUser user=task.getResult().getUser();
-                if(!user.isEmailVerified()){
-                    Toast.makeText(context, "Verify your E-mail first.", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(context, "Successfully Logged In !!", Toast.LENGTH_LONG).show();
-                    checkUsersAccessLevel(user.getUid(), context);
-                }
-            }
-
-            else
-                Toast.makeText(context, "Error !!"+task.getException().getMessage(), Toast.LENGTH_LONG).show();
-        });
-
+    public String getMail() {
+        return mail;
     }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public String getMob() {
+        return mob;
+    }
+
+    public String getIsUser() {
+        return isUser;
+    }
+
+    public String getIsAdmin() {
+        return isAdmin;
+    }
+
 
 }

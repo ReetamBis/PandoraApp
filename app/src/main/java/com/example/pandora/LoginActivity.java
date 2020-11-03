@@ -75,15 +75,15 @@ public class LoginActivity extends AppCompatActivity {
             if(checkpassword(pass.getText().toString())){
 
                 User user = new User(mail.getText().toString(),pass.getText().toString());
-                user.loginuser(getApplicationContext());
-                //final Handler handler = new Handler();
+                loginuser();
+                final Handler handler = new Handler();
 
-                /*handler.postDelayed(new Runnable() {
+                handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         LoginActivity.this.finish();
                     }
-                }, 4000);*/
+                }, 2000);
 
             }
             else
@@ -129,6 +129,47 @@ public class LoginActivity extends AppCompatActivity {
 
             passwordResestDialog.create().show();
         }
+    }
+
+    public void checkUsersAccessLevel(String uid){
+
+        DocumentReference df = fStore.collection("Users").document(uid);
+        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("TAG","onSuccess: "+ documentSnapshot.getData());
+
+                /*if(documentSnapshot.getString("isAdmin").equals("1")){
+                    //admin intent
+                }*/
+
+                if(documentSnapshot.getString("isUser").equals("1")){
+                    Intent intent1= new Intent(LoginActivity.this,com.example.pandora.DashBoard.class);
+                    startActivity(intent1);
+                }
+            }
+        });
+    }
+
+    public void loginuser(){
+        //FirebaseUser user = fAuth.getCurrentUser();
+        fAuth.signInWithEmailAndPassword(mail.getText().toString(),pass.getText().toString()).addOnCompleteListener((task)->{
+
+            if(task.isSuccessful()){
+                FirebaseUser user=task.getResult().getUser();
+                if(!user.isEmailVerified()){
+                    Toast.makeText(LoginActivity.this, "Verify your E-mail first.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(LoginActivity.this, "Successfully Logged In !!", Toast.LENGTH_LONG).show();
+                    checkUsersAccessLevel(user.getUid());
+                }
+            }
+
+            else
+                Toast.makeText(LoginActivity.this, "Error !!"+task.getException().getMessage(), Toast.LENGTH_LONG).show();
+        });
+
     }
 
     @Override
