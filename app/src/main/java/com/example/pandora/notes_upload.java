@@ -10,9 +10,11 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -68,7 +70,7 @@ public class notes_upload extends AppCompatActivity implements AdapterView.OnIte
             currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
             uid = currentFirebaseUser.getUid().toString();
             teacher = teachern.getText().toString();
-            n = new Notes(subject,uid,teacher);
+            n = new Notes(subject,uid,teacher,getFileName(pdfUri));
 
             if(pdfUri!=null)
                 uploadFile(pdfUri,n);
@@ -183,13 +185,35 @@ public class notes_upload extends AppCompatActivity implements AdapterView.OnIte
         startActivityForResult(intent,86);
     }
 
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode==86 && resultCode == RESULT_OK && data!=null) {
             pdfUri = data.getData();
-            notifyn.setText("The file Selected : "+data.getData().getLastPathSegment());
+            notifyn.setText("The file Selected : "+getFileName(data.getData()));
         }
         else
             Toast.makeText(this,"Please Select a File",Toast.LENGTH_SHORT).show();

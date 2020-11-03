@@ -11,9 +11,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -71,7 +73,7 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
 
             currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
             uid = currentFirebaseUser.getUid().toString();
-            p = new PrevPaper(subject,yy,sem,uid);
+            p = new PrevPaper(subject,yy,sem,uid,getFileName(pdfUri));
 
             if(pdfUri!=null)
                 uploadFile(pdfUri,p);
@@ -170,13 +172,35 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
         startActivityForResult(intent,86);
     }
 
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode==86 && resultCode == RESULT_OK && data!=null) {
             pdfUri = data.getData();
-            notify.setText("The file Selected : "+data.getData().getLastPathSegment());
+            notify.setText("The file Selected : "+getFileName(pdfUri));
         }
         else
             Toast.makeText(this,"Please Select a File",Toast.LENGTH_SHORT).show();

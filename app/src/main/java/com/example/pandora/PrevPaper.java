@@ -16,6 +16,7 @@ public class PrevPaper extends Item{
     private String uid;
     private Calendar cal;
     private String checkBit;
+    private String filename;
 
     public PrevPaper(String filename, String dateTime, String subject, String year, String type, Uri url) {
         super(filename,url);
@@ -29,8 +30,8 @@ public class PrevPaper extends Item{
 
 
 
-    public PrevPaper(String subject, String year, String type, String uid) {
-        super(subject + " " + year + " " + type + " " + Calendar.getInstance().getTime().toString(), null);
+    public PrevPaper(String subject, String year, String type, String uid,String filename) {
+        super(filename, null);
         this.cal = Calendar.getInstance();
         this.subject = subject;
         this.year = year;
