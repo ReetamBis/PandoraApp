@@ -145,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(documentSnapshot.getString("isUser").equals("1")){
                     Intent intent1= new Intent(LoginActivity.this,com.example.pandora.DashBoard.class);
+                    intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
                     startActivity(intent1);
                 }
             }
