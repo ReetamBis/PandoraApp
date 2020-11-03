@@ -20,7 +20,6 @@ public class PrevPaper extends Item{
 
     public PrevPaper(String filename, String dateTime, String subject, String year, String type, Uri url) {
         super(filename,url);
-
         this.dateTime = dateTime;
         this.subject = subject;
         this.year = year;
