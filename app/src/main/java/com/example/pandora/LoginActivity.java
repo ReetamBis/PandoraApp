@@ -1,8 +1,10 @@
 package com.example.pandora;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,8 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText mail;
     EditText pass;
     Button signin;
-    TextView reg;
+    TextView reg,forget;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
 
@@ -64,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
     public void onClick(View view){
 
         if(view.getId()==R.id.signin){
@@ -73,14 +76,14 @@ public class LoginActivity extends AppCompatActivity {
 
                 User user = new User(mail.getText().toString(),pass.getText().toString());
                 user.loginuser(getApplicationContext());
-                final Handler handler = new Handler();
+                //final Handler handler = new Handler();
 
-                handler.postDelayed(new Runnable() {
+                /*handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         LoginActivity.this.finish();
                     }
-                }, 4000);
+                }, 4000);*/
 
             }
             else
@@ -90,6 +93,41 @@ public class LoginActivity extends AppCompatActivity {
         if(view.getId()==R.id.reg){
             Intent intent= new Intent(LoginActivity.this,com.example.pandora.Register.class);
             startActivity(intent);
+        }
+
+        if(view.getId()==R.id.forget){
+
+            final EditText resetMail = new EditText(view.getContext());
+            final AlertDialog.Builder passwordResestDialog = new AlertDialog.Builder(view.getContext());
+            passwordResestDialog.setTitle("Reset Password?");
+            passwordResestDialog.setMessage("Enter your Email to receive the reset link..");
+            passwordResestDialog.setView(resetMail);
+
+            passwordResestDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String mail = resetMail.getText().toString();
+                    fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(LoginActivity.this, "Reset Link has been sent !!!", Toast.LENGTH_LONG).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(LoginActivity.this, "Error !!"+e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
+            passwordResestDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            passwordResestDialog.create().show();
         }
     }
 
@@ -102,6 +140,7 @@ public class LoginActivity extends AppCompatActivity {
         pass = findViewById(R.id.pass);
         signin = findViewById(R.id.signin);
         reg = findViewById(R.id.reg);
+        forget = findViewById(R.id.forget);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
