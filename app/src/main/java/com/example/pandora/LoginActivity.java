@@ -154,8 +154,9 @@ public class LoginActivity extends AppCompatActivity {
         if(user != null){
             if(user.isEmailVerified()) {
                 Intent intent1 = new Intent(LoginActivity.this, com.example.pandora.DashBoard.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
                 startActivity(intent1);
-                LoginActivity.this.finish();
+
             }
             else
                 Toast.makeText(LoginActivity.this, "Verify your E-mail first.", Toast.LENGTH_SHORT).show();

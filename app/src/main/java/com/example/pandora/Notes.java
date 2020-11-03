@@ -13,8 +13,8 @@ public class Notes extends Item {
     private Calendar cal;
     private String checkBit;
     private String rating;
-    private String name;
-    private Uri uri;
+
+
 
     public Notes(String subject,String uid,String teacher,String name) {
         super(name,null);
