@@ -73,7 +73,7 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
 
             currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
             uid = currentFirebaseUser.getUid().toString();
-            p = new PrevPaper(subject,yy,sem,uid,getFileName(pdfUri));
+            p = new PrevPaper(subject,yy,sem,uid);
 
             if(pdfUri!=null)
                 uploadFile(pdfUri,p);
