@@ -114,11 +114,11 @@ public class User {
     }
 
      public void loginuser(Context context){
-        FirebaseUser user = fAuth.getCurrentUser();
+        //FirebaseUser user = fAuth.getCurrentUser();
         fAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener((task)->{
 
             if(task.isSuccessful()){
-
+                FirebaseUser user=task.getResult().getUser();
                 if(!user.isEmailVerified()){
                     Toast.makeText(context, "Verify your E-mail first.", Toast.LENGTH_SHORT).show();
                 }

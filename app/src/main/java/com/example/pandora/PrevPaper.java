@@ -16,7 +16,7 @@ public class PrevPaper extends Item{
     private String uid;
     private Calendar cal;
     private String checkBit;
-    private String filename;
+
 
     public PrevPaper(String filename, String dateTime, String subject, String year, String type, Uri url) {
         super(filename,url);
