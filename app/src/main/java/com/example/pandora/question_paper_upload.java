@@ -90,7 +90,7 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
         progressDialog.show();
 
         StorageReference storageReference = storage.getReference();
-        storageReference.child("PaperUpload").child(p.getSubject()).child(p.getType()).child(p.getFilename()).putFile(pdfUri)
+        storageReference.child("PaperUpload").child(p.getSubject()).child(p.getType()).child(p.getName()).putFile(pdfUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -100,7 +100,7 @@ public class question_paper_upload extends AppCompatActivity implements AdapterV
                                 Map<String,Object> f=new HashMap<>();
                                 f.put("F",1);
                                 fStore.collection("PrevPaper").document(p.getSubject()).set(f);
-                                DocumentReference df = fStore.collection("PrevPaper").document(p.getSubject()).collection(p.getType()).document(p.getFilename());
+                                DocumentReference df = fStore.collection("PrevPaper").document(p.getSubject()).collection(p.getType()).document(p.getName());
                                 Map<String,Object> paperInfo = new HashMap<>();
                                 paperInfo.put("UserID",p.getUid());
                                 paperInfo.put("Date/Time",p.getDateTime());

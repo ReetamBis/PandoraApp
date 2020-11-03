@@ -86,7 +86,7 @@ public class notes_upload extends AppCompatActivity implements AdapterView.OnIte
         progressDialog.show();
 
         StorageReference storageReference = storage.getReference();
-        storageReference.child("NotesUpload").child(n.getSubject()).child(n.getFilename()).putFile(pdfUri)
+        storageReference.child("NotesUpload").child(n.getSubject()).child(n.getName()).putFile(pdfUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -95,8 +95,18 @@ public class notes_upload extends AppCompatActivity implements AdapterView.OnIte
                             public void onSuccess(Uri uri) {
                                 Map<String, Object> f = new HashMap<>();
                                 f.put("F", 1);
-                                fStore.collection("Notes").document(n.getSubject()).set(f);
-                                DocumentReference df = fStore.collection("Notes").document(n.getSubject()+"s").collection(n.getSubject()).document(n.getFilename());
+                                fStore.collection("Notes").document(n.getSubject()).set(f).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(notes_upload.this,"set",Toast.LENGTH_SHORT).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(notes_upload.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                DocumentReference df = fStore.collection("Notes").document(n.getSubject()).collection(n.getSubject()).document(n.getName());
                                 Map<String, Object> notesInfo = new HashMap<>();
                                 notesInfo.put("UserID", n.getUid());
                                 notesInfo.put("Date/Time", n.getDateTime());

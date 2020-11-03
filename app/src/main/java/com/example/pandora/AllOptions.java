@@ -43,30 +43,24 @@ public class AllOptions extends AppCompatActivity {
         subjectAdapter=new HomePageRecycleAdapter(this,subjects,new HomePageRecycleAdapter.clicklistener() {
             @Override
             public void onclick(int pos) {
-                Intent intent=new Intent(getBaseContext(),com.example.pandora.AvailableSubjectResource.class);
+                Intent intent;
+                if(category.equals("PrevPaper")){
+                 intent=new Intent(getBaseContext(),com.example.pandora.AvailableSubjectResource.class);
+                }
+                else if(category.equals("Notes"))
+                {
+                    intent=new Intent(getBaseContext(),com.example.pandora.AvailableSubjectNotes.class);
+                }
+                else
+                {
+                    intent=new Intent(getBaseContext(),com.example.pandora.AvailableSubjectResource.class);
+                }
                 intent.putExtra("Category",category);
                 intent.putExtra("Subject",subjects.get(pos));
                 startActivity(intent);
             }
         });
-        allsub.setAdapter(subjectAdapter);
-        fillsubjects();
-        subsearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                Log.i("MyLog:",  s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                Log.i("MyLog after:",  editable.toString());
-            }
-        });
     }
 
     public void search(View view)

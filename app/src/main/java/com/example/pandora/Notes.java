@@ -1,9 +1,11 @@
 package com.example.pandora;
+import android.net.Uri;
+
 import java.util.Calendar;
 
-public class Notes {
+public class Notes extends Item {
 
-    private String filename;
+
     private String dateTime;
     private  String subject;
     private String teacher;
@@ -11,14 +13,14 @@ public class Notes {
     private Calendar cal;
     private String checkBit;
     private String rating;
+    private Uri uri;
 
     public Notes(String subject,String uid,String teacher) {
-
+        super(subject+" "+Calendar.getInstance().getTime().toString(),null);
         this.cal = Calendar.getInstance();
         this.subject = subject;
         this.uid = uid;
         this.dateTime = cal.getTime().toString();
-        this.filename = this.subject+" "+this.dateTime;
         this.checkBit = "0";
         this.rating = "0";
         if(!teacher.equals("")){
@@ -28,9 +30,7 @@ public class Notes {
             this.teacher = "Unknown";
     }
 
-    public String getFilename() {
-        return filename;
-    }
+
 
     public String getDateTime() {
         return dateTime;

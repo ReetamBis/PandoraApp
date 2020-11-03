@@ -15,22 +15,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListItemAdapter  extends RecyclerView.Adapter<ListItemAdapter.PlaceHolder>
 {
     Context context;
-    ArrayList<PrevPaper> prevPapers;
+    ArrayList<Item> items;
+
     public interface onitemclicklistener
     {
         public void onClick(Uri url,String name);
     }
     onitemclicklistener onitemclicklistener;
 
-    public ListItemAdapter(Context context, ArrayList<PrevPaper> prevPapers, ListItemAdapter.onitemclicklistener onitemclicklistener) {
+    public ListItemAdapter(Context context, ArrayList<Item> item, ListItemAdapter.onitemclicklistener onitemclicklistener) {
         this.context = context;
-        this.prevPapers = prevPapers;
+        this.items = item;
         this.onitemclicklistener = onitemclicklistener;
     }
+
+
 
     public class PlaceHolder extends RecyclerView.ViewHolder
     {
@@ -53,18 +57,18 @@ public class ListItemAdapter  extends RecyclerView.Adapter<ListItemAdapter.Place
 
     @Override
     public void onBindViewHolder(@NonNull PlaceHolder holder, int position) {
-            holder.sub.setText(prevPapers.get(position).getFilename());
+            holder.sub.setText(items.get(position).getName());
             holder.down.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onitemclicklistener.onClick(prevPapers.get(position).getUrl(),prevPapers.get(position).getFilename());
+                    onitemclicklistener.onClick(items.get(position).getUri(),items.get(position).getName());
                 }
             });
     }
 
     @Override
     public int getItemCount() {
-        return prevPapers.size();
+        return items.size();
     }
 
 

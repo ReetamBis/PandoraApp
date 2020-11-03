@@ -37,6 +37,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
     RecyclerView listitem;
     String Category,Subject;
     ArrayList<PrevPaper> prevPaper=new ArrayList<>();
+    ArrayList<Item> actprevPaper=new ArrayList<>();
     ArrayList<String> type=new ArrayList<>();
     ArrayList<String> years=new ArrayList<>();
     ListItemAdapter prepaperAdap;
@@ -54,7 +55,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
         type.add("END_SEM");
         type.add("MID-SEM");
 
-        prepaperAdap=new ListItemAdapter(this, prevPaper, new ListItemAdapter.onitemclicklistener() {
+        prepaperAdap=new ListItemAdapter(this, actprevPaper, new ListItemAdapter.onitemclicklistener() {
             @Override
             public void onClick(Uri url,String name) {
                 Log.i("My Log:","Clicked");
@@ -62,13 +63,14 @@ public class AvailableSubjectResource extends AppCompatActivity {
                 DownloadManager downloadManager=(DownloadManager)AvailableSubjectResource.this.getSystemService(Context.DOWNLOAD_SERVICE);
                 DownloadManager.Request req=new DownloadManager.Request(url);
                 req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                req.setDestinationInExternalPublicDir("Pandora/Previous Year Paper",name+".pdf");
+                req.setDestinationInExternalPublicDir("Pandora/Previous Year Paper/"+Subject,name+".pdf");
                 downloadManager.enqueue(req);
             }
         });
         db=FirebaseFirestore.getInstance();
 
         subname=findViewById(R.id.subname);
+        subname.setText(Category+" :: "+Subject);
 
         typewise=findViewById(R.id.typewise);
         ArrayAdapter<String> typewiseAdap = new ArrayAdapter<String>(this,
@@ -78,14 +80,14 @@ public class AvailableSubjectResource extends AppCompatActivity {
 
         yearwise=findViewById(R.id.yearwise);
          yearwiseAdap = new ArrayAdapter<String>(this,R.layout.custom_spinner,years);
-        typewiseAdap.setDropDownViewResource(R.layout.custom_spinner_dropdown);
+        yearwiseAdap.setDropDownViewResource(R.layout.custom_spinner_dropdown);
         yearwise.setAdapter(yearwiseAdap);
 
         listitem=findViewById(R.id.listItems);
         listitem.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         listitem.setAdapter(prepaperAdap);
 
-        subname.setText(Category+" :: "+Subject);
+
         load();
     }
     public void searchitem(View view)
@@ -122,6 +124,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
     {
         Log.i("My LOG:","PrevPaper"+" "+Subject+" END-SEM");
         prevPaper.clear();
+        actprevPaper.clear();
         prepaperAdap.notifyDataSetChanged();
         years.clear();
         years.add("All");
@@ -130,7 +133,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
                 for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-
+                        actprevPaper.add(new Item(correct(d.getId()),Uri.parse( d.get("URL").toString())));
                         prevPaper.add(new PrevPaper(correct(d.getId()),d.get(FieldPath.of("Date/Time")).toString(),Subject,d.get("Year").toString(),"END-SEM", Uri.parse( d.get("URL").toString())));
                         prepaperAdap.notifyDataSetChanged();
                         years.add(d.get("Year").toString());
@@ -144,7 +147,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
                 for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-
+                        actprevPaper.add(new Item(correct(d.getId()),Uri.parse( d.get("URL").toString())));
                         prevPaper.add(new PrevPaper(correct(d.getId()),d.get(FieldPath.of("Date/Time")).toString(),Subject,d.get("Year").toString(),"MID-SEM",  Uri.parse( d.get("URL").toString())));
                         prepaperAdap.notifyDataSetChanged();
                         if(!years.contains(d.get("Year")))
@@ -159,7 +162,9 @@ public class AvailableSubjectResource extends AppCompatActivity {
 
     public void load(String yr)
     {
+
         Log.i("My LOG:",yr);
+        actprevPaper.clear();
         prevPaper.clear();
         prepaperAdap.notifyDataSetChanged();
         db.collection("PrevPaper").document(Subject).collection("END-SEM").whereEqualTo("Year",yr).get(Source.CACHE).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -167,7 +172,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
                 for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-
+                    actprevPaper.add(new Item(correct(d.getId()),Uri.parse( d.get("URL").toString())));
                     prevPaper.add(new PrevPaper(correct(d.getId()),d.get(FieldPath.of("Date/Time")).toString(),Subject,d.get("Year").toString(),"END-SEM", Uri.parse( d.get("URL").toString())));
                     prepaperAdap.notifyDataSetChanged();
 
@@ -179,7 +184,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
                 for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-
+                    actprevPaper.add(new Item(correct(d.getId()),Uri.parse( d.get("URL").toString())));
                     prevPaper.add(new PrevPaper(correct(d.getId()),d.get(FieldPath.of("Date/Time")).toString(),Subject,d.get("Year").toString(),"MID-SEM",  Uri.parse( d.get("URL").toString())));
                     prepaperAdap.notifyDataSetChanged();
                 }
@@ -189,6 +194,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
 
     public void loadEnd()
     {
+        actprevPaper.clear();
         prevPaper.clear();
         prepaperAdap.notifyDataSetChanged();
         db.collection("PrevPaper").document(Subject).collection("END-SEM").get(Source.CACHE).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -196,7 +202,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
                 for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-
+                    actprevPaper.add(new Item(correct(d.getId()),Uri.parse( d.get("URL").toString())));
                     prevPaper.add(new PrevPaper(correct(d.getId()),d.get(FieldPath.of("Date/Time")).toString(),Subject,d.get("Year").toString(),"END-SEM", Uri.parse( d.get("URL").toString())));
                     prepaperAdap.notifyDataSetChanged();
 
@@ -207,6 +213,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
 
     public void loadEnd(String yr)
     {
+        actprevPaper.clear();
         prevPaper.clear();
         prepaperAdap.notifyDataSetChanged();
         db.collection("PrevPaper").document(Subject).collection("END-SEM").whereEqualTo("Year",yr).get(Source.CACHE).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -214,7 +221,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
                 for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-
+                    actprevPaper.add(new Item(correct(d.getId()),Uri.parse( d.get("URL").toString())));
                     prevPaper.add(new PrevPaper(correct(d.getId()),d.get(FieldPath.of("Date/Time")).toString(),Subject,d.get("Year").toString(),"END-SEM", Uri.parse( d.get("URL").toString())));
                     prepaperAdap.notifyDataSetChanged();
 
@@ -224,6 +231,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
     }
     public void loadMid()
     {
+        actprevPaper.clear();
         prevPaper.clear();
         prepaperAdap.notifyDataSetChanged();
         db.collection("PrevPaper").document(Subject).collection("MID-SEM").get(Source.CACHE).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -231,7 +239,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
                 for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-
+                    actprevPaper.add(new Item(correct(d.getId()),Uri.parse( d.get("URL").toString())));
                     prevPaper.add(new PrevPaper(correct(d.getId()),d.get(FieldPath.of("Date/Time")).toString(),Subject,d.get("Year").toString(),"MID-SEM",  Uri.parse( d.get("URL").toString())));
                     prepaperAdap.notifyDataSetChanged();
                 }
@@ -241,6 +249,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
 
     public void loadMid(String yr)
     {
+        actprevPaper.clear();
         prevPaper.clear();
         prepaperAdap.notifyDataSetChanged();
         db.collection("PrevPaper").document(Subject).collection("MID-SEM").whereEqualTo("Year",yr).get(Source.CACHE).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -248,7 +257,7 @@ public class AvailableSubjectResource extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
                 for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
-
+                    actprevPaper.add(new Item(correct(d.getId()),Uri.parse( d.get("URL").toString())));
                     prevPaper.add(new PrevPaper(correct(d.getId()),d.get(FieldPath.of("Date/Time")).toString(),Subject,d.get("Year").toString(),"MID-SEM",  Uri.parse( d.get("URL").toString())));
                     prepaperAdap.notifyDataSetChanged();
                 }

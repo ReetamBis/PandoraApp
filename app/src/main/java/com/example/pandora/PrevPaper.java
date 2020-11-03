@@ -1,12 +1,14 @@
 package com.example.pandora;
 import android.net.Uri;
 
+import androidx.cardview.widget.CardView;
+
 import java.net.URL;
 import java.util.Calendar;
 
-public class PrevPaper {
+public class PrevPaper extends Item{
 
-    private String filename;
+
     private String dateTime;
     private String subject;
     private String year;
@@ -14,34 +16,29 @@ public class PrevPaper {
     private String uid;
     private Calendar cal;
     private String checkBit;
-    private Uri url;
+
     public PrevPaper(String filename, String dateTime, String subject, String year, String type, Uri url) {
-        this.filename = filename;
+        super(filename,url);
+
         this.dateTime = dateTime;
         this.subject = subject;
         this.year = year;
         this.type = type;
-        this.url=url;
+
     }
 
-    public Uri getUrl() {
-        return url;
-    }
+
 
     public PrevPaper(String subject, String year, String type, String uid) {
-
+        super(subject + " " + year + " " + type + " " + Calendar.getInstance().getTime().toString(), null);
         this.cal = Calendar.getInstance();
         this.subject = subject;
         this.year = year;
         this.type = type;
         this.uid = uid;
         this.dateTime = cal.getTime().toString();
-        this.filename = this.subject+" "+this.year+" "+this.type+" "+this.dateTime;
-        this.checkBit = "0";
-    }
 
-    public String getFilename() {
-        return filename;
+        this.checkBit = "0";
     }
 
     public String getDateTime() {
