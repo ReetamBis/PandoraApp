@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -65,7 +66,7 @@ public class AvailableSubjectNotes extends AppCompatActivity {
                 DownloadManager.Request req=new DownloadManager.Request(url);
                 req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-                    req.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS,"Pandora/Notes/"+Subject+"/"+name);
+                    req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"Pandora/Notes/"+Subject+"/"+name);
                 else
                     req.setDestinationInExternalPublicDir("Pandora/Notes/"+Subject,name);
                 downloadManager.enqueue(req);
