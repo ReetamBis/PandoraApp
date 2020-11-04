@@ -48,7 +48,7 @@ public class AvailableSubjectNotes extends AppCompatActivity {
         Intent intent=getIntent();
         Category=intent.getStringExtra("Category");
         Subject=intent.getStringExtra("Subject");
-        ratings.add("All");
+        ratings.add("Ratings:All");
         ratings.add("<=2");
         ratings.add("3");
         ratings.add(">=4");
@@ -61,7 +61,7 @@ public class AvailableSubjectNotes extends AppCompatActivity {
                 DownloadManager downloadManager=(DownloadManager)AvailableSubjectNotes.this.getSystemService(Context.DOWNLOAD_SERVICE);
                 DownloadManager.Request req=new DownloadManager.Request(url);
                 req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                req.setDestinationInExternalPublicDir("Pandora/Notes/"+Subject,name+".pdf");
+                req.setDestinationInExternalFilesDir(AvailableSubjectNotes.this,"/Pandora/Notes/"+Subject,name);
                 downloadManager.enqueue(req);
             }
         });
@@ -89,13 +89,41 @@ public class AvailableSubjectNotes extends AppCompatActivity {
 
     }
     public void searchitem(View view)
-    {}
+    {
+        int s=teacherwise.getSelectedItemPosition();
+        if(s>0)
+        {
+            loadTeacher(teacherwise.getSelectedItem().toString());
+        }
+    }
     public void load() {
         notes.clear();
         notesAdap.notifyDataSetChanged();
         teacher.clear();
         teacher.add("All");
         db.collection("Notes").document(Subject).collection(Subject).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
+                    actnotes.add(new Item(correct(d.getId()),Uri.parse(d.get("URL").toString())));
+                    //notes.add(new Notes(correct(d.getId()), d.get(FieldPath.of("Date/Time")).toString(), Subject, d.get("Year").toString(), "END-SEM", Uri.parse(d.get("URL").toString())));
+                    notesAdap.notifyDataSetChanged();
+                    teacher.add(d.get("Teacher").toString());
+                    teacherwiseAdap.notifyDataSetChanged();
+
+                }
+            }
+        });
+    }
+    public void loadTeacher(String s)
+    {
+        actnotes.clear();
+        notes.clear();
+        notesAdap.notifyDataSetChanged();
+        teacher.clear();
+        teacher.add("All");
+        db.collection("Notes").document(Subject).collection(Subject).whereEqualTo("Teacher",s).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 

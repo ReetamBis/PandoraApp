@@ -114,7 +114,7 @@ public class notes_upload extends AppCompatActivity implements AdapterView.OnIte
                                 notesInfo.put("Date/Time", n.getDateTime());
                                 notesInfo.put("Visible", n.getCheckBit());
                                 notesInfo.put("URL", uri.toString());
-                                notesInfo.put("Teacher", n.getTeacher());
+                                notesInfo.put("Teacher", n.getTeacher().toLowerCase());
                                 notesInfo.put("Rating", n.getRating());
                                 df.set(notesInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
