@@ -8,6 +8,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class AvailableSubjectNotes extends AppCompatActivity {
 
@@ -61,7 +64,10 @@ public class AvailableSubjectNotes extends AppCompatActivity {
                 DownloadManager downloadManager=(DownloadManager)AvailableSubjectNotes.this.getSystemService(Context.DOWNLOAD_SERVICE);
                 DownloadManager.Request req=new DownloadManager.Request(url);
                 req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                req.setDestinationInExternalFilesDir(AvailableSubjectNotes.this,"/Pandora/Notes/"+Subject,name);
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    req.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS,name);
+                else
+                    req.setDestinationInExternalPublicDir("Pandora/Previous Year Paper/"+Subject,name);
                 downloadManager.enqueue(req);
             }
         });

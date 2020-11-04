@@ -8,7 +8,9 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -63,7 +65,10 @@ public class AvailableSubjectResource extends AppCompatActivity {
                 DownloadManager downloadManager=(DownloadManager)AvailableSubjectResource.this.getSystemService(Context.DOWNLOAD_SERVICE);
                 DownloadManager.Request req=new DownloadManager.Request(url);
                 req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                req.setDestinationInExternalFilesDir(AvailableSubjectResource.this,"Pandora/Previous Year Paper/"+Subject,name);
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    req.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS,name);
+                else
+                    req.setDestinationInExternalPublicDir("Pandora/Previous Year Paper/"+Subject,name);
                 downloadManager.enqueue(req);
             }
         });
