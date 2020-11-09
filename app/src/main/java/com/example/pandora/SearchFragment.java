@@ -59,13 +59,6 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    void onChoose(View view){
-
-        if(view.getId()==R.id.prev){
-
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

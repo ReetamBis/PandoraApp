@@ -76,14 +76,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 User user = new User(mail.getText().toString(),pass.getText().toString());
                 loginuser();
-                final Handler handler = new Handler();
-
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        LoginActivity.this.finish();
-                    }
-                }, 2000);
 
             }
             else
