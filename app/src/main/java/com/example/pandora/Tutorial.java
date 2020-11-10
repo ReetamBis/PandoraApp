@@ -75,7 +75,7 @@ public class Tutorial extends AppCompatActivity implements AdapterView.OnItemSel
     public void uploadLink(TutLink t){
         Map<String,Object> f=new HashMap<>();
         f.put("F",1);
-        fStore.collection("PrePaper").document(t.getSubject()).set(f);
+        fStore.collection("Tutorials").document(t.getSubject()).set(f);
         DocumentReference df = fStore.collection("Tutorials").document(t.getSubject()).collection(t.getSubject()).document(t.getFilename());
         Map<String,Object> tutInfo = new HashMap<>();
         tutInfo.put("UserID",t.getUid());

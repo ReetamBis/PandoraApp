@@ -51,9 +51,13 @@ public class AllOptions extends AppCompatActivity {
                 {
                     intent=new Intent(getBaseContext(),com.example.pandora.AvailableSubjectNotes.class);
                 }
+                else if(category.equals("Tutorials"))
+                {
+                    intent=new Intent(getBaseContext(),com.example.pandora.AvailableSubjectTutorials.class);
+                }
                 else
                 {
-                    intent=new Intent(getBaseContext(),com.example.pandora.AvailableSubjectResource.class);
+                    intent=new Intent(getBaseContext(),com.example.pandora.AvailableSubjectNotes.class);
                 }
                 intent.putExtra("Category",category);
                 intent.putExtra("Subject",subjects.get(pos));

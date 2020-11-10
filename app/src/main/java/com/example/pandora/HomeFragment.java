@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
         resourcesAdap=new HomePageRecycleAdapter(this.getActivity(),resourcesubject,new HomePageRecycleAdapter.clicklistener() {
             @Override
             public void onclick(int pos) {
-                Intent intent=new Intent(getContext(),com.example.pandora.AvailableSubjectResource.class);
+                Intent intent=new Intent(getContext(),com.example.pandora.AvailableSubjectTutorials.class);
                 intent.putExtra("Category","Tutorials");
                 intent.putExtra("Subject",resourcesubject.get(pos));
                 startActivity(intent);

@@ -66,9 +66,9 @@ public class AvailableSubjectResource extends AppCompatActivity {
                 DownloadManager.Request req=new DownloadManager.Request(url);
                 req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-                    req.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS,"Pandora/Previous Year Paper/"+Subject+"/"+name);
+                    req.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS,"Pandora/Previous Year Paper/"+Subject+"/"+name+".pdf");
                 else
-                    req.setDestinationInExternalPublicDir("Pandora/Previous Year Paper/"+Subject,name);
+                    req.setDestinationInExternalPublicDir("Pandora/Previous Year Paper/"+Subject,name+".pdf");
                 downloadManager.enqueue(req);
             }
         });
