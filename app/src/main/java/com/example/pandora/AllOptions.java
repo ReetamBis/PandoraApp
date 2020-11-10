@@ -60,7 +60,8 @@ public class AllOptions extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        allsub.setAdapter(subjectAdapter);
+        fillsubjects();
     }
 
     public void search(View view)

@@ -20,8 +20,8 @@ public class DashBoard extends AppCompatActivity {
         adapter = new TabAdapter(getSupportFragmentManager());
 
         adapter.addFragment(new HomeFragment(), "Home");
-        adapter.addFragment(new AddPostFragment(), "Add");
         adapter.addFragment(new SearchFragment(), "Search");
+        adapter.addFragment(new AddPostFragment(), "Add");
         adapter.addFragment(new AccountFragment(), "Account");
         int[] tabIcons = {
                 R.drawable.home_icon,

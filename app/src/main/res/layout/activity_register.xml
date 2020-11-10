@@ -326,7 +326,7 @@
                 </LinearLayout>
 
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -334,7 +334,7 @@
                     android:layout_marginTop="40dp"
                     android:layout_marginBottom="20dp"
                     android:layout_marginEnd="50dp"
-                    android:background="@drawable/button_login"
+                    app:cornerRadius="20dp"
                     android:backgroundTint="#10173C"
                     android:onClick="onReg"
                     android:text="Register"

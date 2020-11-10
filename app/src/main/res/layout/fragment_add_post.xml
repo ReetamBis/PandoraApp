@@ -1,11 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bd"
-    tools:context=".AddPostFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <com.github.captain_miao.optroundcardview.OptRoundCardView
+            android:id="@+id/optRoundCardView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@drawable/bd"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/prev"
+                            android:layout_width="100dp"
+                            android:layout_height="200dp"
+                            android:layout_margin="15dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="#10173C"
+                            android:layout_gravity="center"
+                            android:text="Previous\n Papers "
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+
+                        <Button
+                            android:id="@+id/notes"
+                            android:layout_width="100dp"
+                            android:layout_height="200dp"
+                            android:layout_margin="15dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:backgroundTint="#10173C"
+                            android:text="Notes"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/tut"
+                            android:layout_width="100dp"
+                            android:layout_height="200dp"
+                            android:layout_weight="0.5"
+                            android:layout_margin="15dp"
+                            android:layout_gravity="center"
+                            android:backgroundTint="#10173C"
+                            android:text="Tutorials"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+                        <Button
+                            android:id="@+id/temp"
+                            android:layout_width="100dp"
+                            android:layout_height="200dp"
+                            android:layout_weight="0.5"
+                            android:layout_margin="15dp"
+                            android:layout_gravity="center"
+                            android:backgroundTint="#10173C"
+                            android:text="Tutorials"
+                            android:visibility="invisible"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+
+        </com.github.captain_miao.optroundcardview.OptRoundCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

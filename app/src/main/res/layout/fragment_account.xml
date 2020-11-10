@@ -209,7 +209,7 @@
 
 
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/logout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -217,8 +217,8 @@
                     android:layout_marginTop="40dp"
                     android:layout_marginBottom="20dp"
                     android:layout_marginEnd="50dp"
-                    android:background="@drawable/button_login"
                     android:backgroundTint="#10173C"
+                    app:cornerRadius="20dp"
                     android:text="LOGOUT"
                     android:textAllCaps="false"
                     android:textColor="@color/white"

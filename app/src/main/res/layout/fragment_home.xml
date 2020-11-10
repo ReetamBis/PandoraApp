@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bd"
     tools:context=".HomeFragment">
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bd">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,6 +19,7 @@
             android:layout_height="match_parent"
             android:text="Previous Year Papers   >>>"
             android:textSize="20sp"
+            android:textColor="@color/white"
             android:layout_margin="5dp"
             android:textStyle="bold|italic"
             android:id="@+id/allprev"/>
@@ -31,6 +34,7 @@
             android:layout_height="match_parent"
             android:text="Notes   >>>"
             android:textSize="20sp"
+            android:textColor="@color/white"
             android:layout_margin="5dp"
             android:textStyle="bold|italic"
             android:id="@+id/allnotes"/>
@@ -57,6 +61,7 @@
             android:layout_height="match_parent"
             android:text="Research Paper   >>>"
             android:textSize="20sp"
+            android:textColor="@color/white"
             android:layout_margin="5dp"
             android:textStyle="bold|italic"
             android:id="@+id/allresearch"/>

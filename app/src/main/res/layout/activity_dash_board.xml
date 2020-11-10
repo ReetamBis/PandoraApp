@@ -8,15 +8,17 @@
     android:background="@drawable/bd"
     android:orientation="vertical">
 
-    <include layout="@layout/app_bar"
-        />
+    <!--<include layout="@layout/app_bar"
+        />-->
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:background="@drawable/bd"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:paddingTop="20dp"
+        />
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
