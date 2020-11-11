@@ -65,10 +65,9 @@ public class AvailableSubjectNotes extends AppCompatActivity {
                 DownloadManager downloadManager=(DownloadManager)AvailableSubjectNotes.this.getSystemService(Context.DOWNLOAD_SERVICE);
                 DownloadManager.Request req=new DownloadManager.Request(url);
                 req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+
                     req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"Pandora/Notes/"+Subject+"/"+name);
-                else
-                    req.setDestinationInExternalPublicDir("Pandora/Notes/"+Subject,name);
+
                 downloadManager.enqueue(req);
             }
         });
