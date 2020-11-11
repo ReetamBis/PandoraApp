@@ -49,6 +49,7 @@
             android:text="Resources for Exam   >>>"
             android:textSize="20sp"
             android:layout_margin="5dp"
+            android:textColor="@color/white"
             android:textStyle="bold|italic"
             android:id="@+id/allresource"/>
         <androidx.recyclerview.widget.RecyclerView
