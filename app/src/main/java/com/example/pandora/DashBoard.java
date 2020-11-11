@@ -20,12 +20,12 @@ public class DashBoard extends AppCompatActivity {
         adapter = new TabAdapter(getSupportFragmentManager());
 
         adapter.addFragment(new HomeFragment(), "Home");
-        adapter.addFragment(new SearchFragment(), "Search");
+        //adapter.addFragment(new SearchFragment(), "Search");
         adapter.addFragment(new AddPostFragment(), "Add");
         adapter.addFragment(new AccountFragment(), "Account");
         int[] tabIcons = {
                 R.drawable.home_icon,
-                R.drawable.search_icon,
+                //R.drawable.search_icon,
                 R.drawable.add_icon,
                 R.drawable.user_icon
         };
@@ -34,7 +34,7 @@ public class DashBoard extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
-        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+        //tabLayout.getTabAt(3).setIcon(tabIcons[3]);
     }
 
 }
