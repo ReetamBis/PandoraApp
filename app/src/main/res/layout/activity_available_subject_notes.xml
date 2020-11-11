@@ -50,6 +50,7 @@
         android:onClick="searchitem"
         android:backgroundTint="#10173C"
         app:cornerRadius="20dp"
+        android:textColor="@color/white"
         android:text="Go"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
