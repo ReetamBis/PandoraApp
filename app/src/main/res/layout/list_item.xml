@@ -4,6 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_marginBottom="2dp"
+    android:layout_marginTop="2dp"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -19,6 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:layout_weight="8"
             />
         <ImageView
