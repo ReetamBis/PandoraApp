@@ -1,12 +1,17 @@
 package com.example.pandora;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,6 +48,8 @@ public class AvailableSubjectNotes extends AppCompatActivity {
     ListItemAdapter notesAdap;
     ArrayAdapter<String> teacherwiseAdap,ratingwiseAdap;
     FirebaseFirestore db;
+    String gname;
+    Uri gurl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +67,16 @@ public class AvailableSubjectNotes extends AppCompatActivity {
         notesAdap=new ListItemAdapter(this, actnotes, new ListItemAdapter.onitemclicklistener() {
             @Override
             public void onClick(Uri url, String name) {
-                Log.i("My Log:","Clicked");
-                Toast.makeText(getBaseContext(),"Starting Download",Toast.LENGTH_SHORT).show();
-                DownloadManager downloadManager=(DownloadManager)AvailableSubjectNotes.this.getSystemService(Context.DOWNLOAD_SERVICE);
-                DownloadManager.Request req=new DownloadManager.Request(url);
-                req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
-                    req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"Pandora/Notes/"+Subject+"/"+name);
-
-                downloadManager.enqueue(req);
+                if(ContextCompat.checkSelfPermission(AvailableSubjectNotes.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
+                    gname=name;
+                    gurl=url;
+                    download();
+                }
+                else {
+                    gname=name;
+                    gurl=url;
+                    ActivityCompat.requestPermissions(AvailableSubjectNotes.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 9);
+                }
             }
         });
         listitem=findViewById(R.id.listItems);
@@ -93,6 +101,24 @@ public class AvailableSubjectNotes extends AppCompatActivity {
 
         load();
 
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(requestCode==9 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            download();
+        else
+            Toast.makeText(this, "Please Provide Permission", Toast.LENGTH_SHORT).show();
+    }
+    public void download()
+    {
+        Log.i("My Log:","Clicked");
+        Toast.makeText(getBaseContext(),"Starting Download",Toast.LENGTH_SHORT).show();
+        DownloadManager downloadManager=(DownloadManager)AvailableSubjectNotes.this.getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager.Request req=new DownloadManager.Request(gurl);
+        req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"Pandora/Notes/"+Subject+"/"+gname);
+        downloadManager.enqueue(req);
     }
     public void searchitem(View view)
     {
